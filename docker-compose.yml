@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  userservice:
+    build:
+      context: ./UserService
+    ports:
+      - "5001:80"
+    container_name: userservice
+    restart: always
+
+  taskservice:
+    build:
+      context: ./TaskService
+    ports:
+      - "5002:80"
+    container_name: taskservice
+    restart: always
+
+  reportingservice:
+    build:
+      context: ./ReportingService
+    ports:
+      - "5003:80"
+    container_name: reportingservice
+    restart: always
