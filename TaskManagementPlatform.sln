@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81 d17.13
+VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{041B51F5-DC63-4F72-A12D-64135F818CAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService", "TaskService\TaskService.csproj", "{1B1837F1-F8FC-4495-B6C1-18871D56B03F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{041B51F5-DC63-4F72-A12D-64135F818CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{041B51F5-DC63-4F72-A12D-64135F818CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{041B51F5-DC63-4F72-A12D-64135F818CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B1837F1-F8FC-4495-B6C1-18871D56B03F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B1837F1-F8FC-4495-B6C1-18871D56B03F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B1837F1-F8FC-4495-B6C1-18871D56B03F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B1837F1-F8FC-4495-B6C1-18871D56B03F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
