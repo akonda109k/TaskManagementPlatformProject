@@ -1,57 +1,41 @@
-﻿using UserService.Models;
+﻿using MongoDB.Driver;
+using UserService.Data;
+using UserService.Models;
+using UserService.Services;
 
-namespace UserService.Services
+public class UsersService : IUserService
 {
-    public class UsersService : IUserService
+    private readonly IMongoCollection<User> _users;
+
+    public UsersService(MongoDbContext context)
     {
-        private readonly List<User> _users = new();
+        _users = context.Database.GetCollection<User>("Users");
+    }
 
-        public UsersService()
-        {
-            // Seed with one admin user
-            _users.Add(new User
-            {
-                Id = Guid.NewGuid(),
-                Username = "admin",
-                Password = "admin", // For stub only
-                Role = UserRole.Admin,
-                Email = "admin@org.com"
-            });
-        }
+    public IEnumerable<User> ListUsers() => _users.Find(_ => true).ToList();
 
-        public IEnumerable<User> ListUsers() => _users;
+    public User? GetUser(int id) => _users.Find(u => u.Id == id).FirstOrDefault();
 
-        public User? GetUser(Guid id) => _users.FirstOrDefault(u => u.Id == id);
+    public User CreateUser(User user)
+    {
+        _users.InsertOne(user);
+        return user;
+    }
 
-        public User CreateUser(User user)
-        {
-            user.Id = Guid.NewGuid();
-            _users.Add(user);
-            return user;
-        }
+    public User? UpdateUser(int id, User user)
+    {
+        var result = _users.ReplaceOne(u => u.Id == id, user);
+        return result.IsAcknowledged && result.ModifiedCount > 0 ? user : null;
+    }
 
-        public User? UpdateUser(Guid id, User user)
-        {
-            var existing = GetUser(id);
-            if (existing == null) return null;
-            existing.Username = user.Username;
-            existing.Password = user.Password;
-            existing.Role = user.Role;
-            existing.Email = user.Email;
-            return existing;
-        }
+    public bool DeleteUser(int id)
+    {
+        var result = _users.DeleteOne(u => u.Id == id);
+        return result.DeletedCount > 0;
+    }
 
-        public bool DeleteUser(Guid id)
-        {
-            var user = GetUser(id);
-            if (user == null) return false;
-            _users.Remove(user);
-            return true;
-        }
-
-        public User? Authenticate(string username, string password)
-        {
-            return _users.FirstOrDefault(u => u.Username == username && u.Password == password);
-        }
+    public User? Authenticate(string username, string password)
+    {
+        return _users.Find(u => u.Username == username && u.Password == password).FirstOrDefault();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Json;
 
 namespace ReportingService.Middleware
@@ -35,7 +34,12 @@ namespace ReportingService.Middleware
                         context.User = new ClaimsPrincipal(identity);
                     }
                 }
-                catch { /* Ignore invalid token */ }
+                catch (JsonException ex)
+                {
+                    // Log the invalid token error for diagnostics
+                    var logger = context.RequestServices.GetService<ILogger<StubAuthMiddleware>>();
+                    logger?.LogWarning(ex, "Invalid stub token in Authorization header: {Token}", token);
+                }
             }
             await _next(context);
         }

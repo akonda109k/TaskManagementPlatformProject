@@ -5,10 +5,10 @@ namespace UserService.Services
     public interface IUserService
     {
         IEnumerable<User> ListUsers();
-        User? GetUser(Guid id);
+        User? GetUser(int id);
         User CreateUser(User user);
-        User? UpdateUser(Guid id, User user);
-        bool DeleteUser(Guid id);
+        User? UpdateUser(int id, User user);
+        bool DeleteUser(int id);
         User? Authenticate(string username, string password);
     }
 }

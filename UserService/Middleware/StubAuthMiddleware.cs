@@ -35,7 +35,12 @@ namespace UserService.Middleware
                         context.User = new ClaimsPrincipal(identity);
                     }
                 }
-                catch { /* Ignore invalid token */ }
+                catch (JsonException ex)
+                {
+                    // Log the invalid token error for diagnostics
+                    var logger = context.RequestServices.GetService<ILogger<StubAuthMiddleware>>();
+                    logger?.LogWarning(ex, "Invalid stub token in Authorization header: {Token}", token);
+                }
             }
             await _next(context);
         }

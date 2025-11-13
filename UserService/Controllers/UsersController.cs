@@ -8,6 +8,7 @@ namespace UserService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -24,7 +25,7 @@ namespace UserService.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetUser(Guid id)
+        public IActionResult GetUser(int id)
         {
             var user = _userService.GetUser(id);
             if (user == null) return NotFound();
@@ -32,6 +33,7 @@ namespace UserService.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateUser([FromBody] User user)
         {
             var created = _userService.CreateUser(user);
@@ -39,7 +41,7 @@ namespace UserService.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] User user)
+        public IActionResult UpdateUser(int id, [FromBody] User user)
         {
             var updated = _userService.UpdateUser(id, user);
             if (updated == null) return NotFound();
@@ -47,7 +49,8 @@ namespace UserService.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(Guid id)
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteUser(int id)
         {
             // Only Admin can delete
             var role = User.FindFirstValue(ClaimTypes.Role);
@@ -56,7 +59,7 @@ namespace UserService.Controllers
 
             var deleted = _userService.DeleteUser(id);
             if (!deleted) return NotFound();
-            return NoContent();
+            return Ok();
         }
     }
 }
